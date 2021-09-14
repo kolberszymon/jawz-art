@@ -27,9 +27,22 @@
     ]
   },
   "dependencies": {
+    "@ethereumjs/common": "^2.4.0",
+    "@ethereumjs/tx": "^3.3.0",
+    "@rarible/action": "0.2.5",
+    "@rarible/protocol-api-client": "0.1.4",
+    "@rarible/protocol-ethereum-sdk": "0.1.4",
+    "@rarible/types": "0.1.2",
+    "@rarible/web3-ethereum": "0.1.16",
+    "ethereumjs-util": "^7.1.0",
     "next": "11.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-content-loader": "6.0.3",
+    "react-dom": "17.0.2",
+    "tslib": "^2.3.1",
+    "web3": "1.2.11",
+    "web3-eth-contract": "1.2.11",
+    "web3-utils": "1.2.11"
   },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
@@ -39,6 +52,7 @@
     "@types/react-dom": "17.0.9",
     "@typescript-eslint/eslint-plugin": "4.30.0",
     "@typescript-eslint/parser": "4.30.0",
+    "autoprefixer": "10.3.4",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "7.32.0",
@@ -51,9 +65,10 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
-    "husky": "7.0.2",
     "lint-staged": "11.1.2",
+    "postcss": "8.3.6",
     "prettier": "2.3.2",
+    "tailwindcss": "2.2.15",
     "typescript": "4.4.2"
   },
   "config": {

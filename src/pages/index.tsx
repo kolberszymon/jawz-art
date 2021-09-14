@@ -1,75 +1,45 @@
-import Head from 'next/head';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+import { RaribleSdk } from '@rarible/protocol-ethereum-sdk';
+import ImagePlaceholder from '@/components/placeholders/ImagePlaceholder';
+import MetaMaskButton from '../components/MetaMaskButton';
+import Navbar from '../components/Navbar';
 
-import styles from '@/styles/Home.module.css';
+const imageURL = `https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1051&q=80`;
 
-export default function Home() {
+type DashboardProps = {
+  provider: any;
+  sdk: RaribleSdk;
+  accounts: string[];
+};
+
+const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
+  const connectWalletHandler = async () => {
+    await provider.request({ method: `eth_requestAccounts` });
+  };
+
+  const handleButtonClick = (): void => {
+    connectWalletHandler();
+  };
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>TypeScript starter for Next.js</title>
-        <meta
-          name="description"
-          content="TypeScript starter for Next.js that includes all you need to build amazing apps"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="h-screen w-full relative">
+      <Navbar />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{` `}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <p className={styles.description}>This is not an official starter!</p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=typescript-nextjs-starter"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      <main className="w-full h-full flex flex-col md:flex-row justify-around items-center px-2">
+        <ImagePlaceholder width={500} height={500} />
+        <div>
+          <ImagePlaceholder width={200} height={200} />
+          <ImagePlaceholder width={200} height={200} />
+        </div>
+        <div>
+          <ImagePlaceholder width={200} height={200} />
+          <ImagePlaceholder width={200} height={200} />
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=typescript-nextjs-starter"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{` `}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <MetaMaskButton onClick={handleButtonClick} accounts={accounts} />
     </div>
   );
-}
+};
+
+export default Dashboard;

@@ -27,7 +27,7 @@
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
     "import/extensions": [
-      "error",
+      0,
       "ignorePackages",
       {
         "ts": "never",
