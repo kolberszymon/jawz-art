@@ -35,4 +35,14 @@
       background-color: transparent;
     }
   }
+
+  /* TRANSLATE */
+
+  .up-on-hover {
+    transition: all 0.3s;
+  }
+
+  .up-on-hover:hover {
+    transform: translateY(-10px);
+  }
 }

@@ -7,7 +7,6 @@ const Navbar = () => {
 
   const handleMenuClick = () => {
     setIsNavVisible(!isNavVisible);
-    console.log(isNavVisible);
   };
 
   return (
@@ -18,10 +17,10 @@ const Navbar = () => {
           isNavVisible ? `nav-menu-visible` : ``
         }`}
       >
-        <div className="mb-6 md:mb-0 md:mr-6">
+        <div className="mb-6 md:mb-0 md:mr-6 cursor-pointer hover:text-red-700">
           <Link href="/">art</Link>
         </div>
-        <div>
+        <div className="cursor-pointer hover:text-red-700">
           <Link href="/">about me</Link>
         </div>
       </div>

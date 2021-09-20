@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     cursor: {
       pointer: 'pointer',
+      default: 'default',
     },
     boxShadow: {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -36,7 +37,10 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+      cursor: ['disabled'],
+    },
   },
   plugins: [],
 };

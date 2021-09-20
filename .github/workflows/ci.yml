@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   run-ci:
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: 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
 
     name: Run Type Check & Linters
     runs-on: ubuntu-latest
