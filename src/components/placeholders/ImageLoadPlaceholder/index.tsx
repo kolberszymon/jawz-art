@@ -32,7 +32,7 @@ const ImageLoadPlaceholder: React.FC<ImageLoadPlaceholderProps> = ({
         className={` object-contain cursor-pointer up-on-hover ${
           !isImageLoaded ? `hidden` : `block`
         }`}
-        style={{ width }}
+        style={{ width, height }}
       />
       {!isImageLoaded && (
         <ContentLoader

@@ -70,16 +70,18 @@ const NFTDetailsForm: React.FC<NFTDetailsFormProps> = ({ sendData }) => {
             className="w-3/5 py-2 outline-none border-b-2 border-gray-400 focus:border-black mb-4"
             {...register(`title`)}
           />
+          {/* eslint-disable */}
           <label
             htmlFor="description"
             className="w-3/5 text-left font-bold flex flex-col"
           >
             Description
-            <input
-              className="w-full py-2 outline-none border-b-2 border-gray-400 focus:border-black mb-4"
-              {...register(`description`)}
-            />
           </label>
+          <input
+            className="w-3/5 py-2 outline-none border-b-2 border-gray-400 focus:border-black mb-4"
+            {...register(`description`)}
+          />
+          {/* eslint-enable */}
           <label
             htmlFor="royalties"
             className="w-3/5 text-left font-bold"
@@ -95,7 +97,6 @@ const NFTDetailsForm: React.FC<NFTDetailsFormProps> = ({ sendData }) => {
         <button
           type="submit"
           className="py-2 px-4 text-white bg-red-600 font-bold rounded-full disabled:opacity-50 disabled:cursor-default"
-          disabled={!isValid}
         >
           Create NFT
         </button>
