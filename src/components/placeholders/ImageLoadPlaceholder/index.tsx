@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  DetailedHTMLProps,
+  ImgHTMLAttributes,
+} from 'react';
 import ContentLoader from 'react-content-loader';
 import Image from 'next/image';
+import CSS from 'csstype';
 
 type ImageLoadPlaceholderProps = {
-  width: number;
-  height: number;
   imgUrl: string;
 };
 
 const ImageLoadPlaceholder: React.FC<ImageLoadPlaceholderProps> = ({
-  width,
-  height,
   imgUrl,
 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
@@ -25,16 +27,9 @@ const ImageLoadPlaceholder: React.FC<ImageLoadPlaceholderProps> = ({
   }, [isImageLoaded]);
 
   return (
-    <div className=" block">
-      <img
-        src={imgUrl}
-        onLoad={onLoad}
-        className={` object-contain cursor-pointer up-on-hover ${
-          !isImageLoaded ? `hidden` : `block`
-        }`}
-        style={{ width, height }}
-      />
-      {!isImageLoaded && (
+    <div className="block h-4/6">
+      <img src={imgUrl} onLoad={onLoad} className={` object-contain h-full`} />
+      {/* {!isImageLoaded && (
         <ContentLoader
           speed={2}
           width={width}
@@ -46,7 +41,7 @@ const ImageLoadPlaceholder: React.FC<ImageLoadPlaceholderProps> = ({
         >
           <rect x="0" y="60" rx="2" ry="2" width="400" height="400" />
         </ContentLoader>
-      )}
+      )} */}
     </div>
   );
 };

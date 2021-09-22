@@ -2,9 +2,29 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    colors: {
+      ruby: '#B60336',
+      vibyred: '#FF4D80',
+      white: '#FFF',
+      gray: '#A7A7A7',
+    },
     cursor: {
       pointer: 'pointer',
       default: 'default',
+    },
+    maxHeight: {
+      0: '0',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
+      full: '100%',
+    },
+    maxWidth: {
+      0: '0',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
+      full: '100%',
     },
     boxShadow: {
       sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',

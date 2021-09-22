@@ -10,17 +10,17 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full h-14 bg-white shadow-md fixed top-0 left-0 right-0 flex items-center px-14 justify-between z-10">
-      <h6>jawzart</h6>
+    <nav className="w-full h-14 bg-transparent shadow-md fixed top-0 left-0 right-0 flex items-center px-14 justify-between z-10">
+      <h6 className="text-white uppercase font-bold">jawzart</h6>
       <div
         className={`text-xl uppercase nav-menu ${
           isNavVisible ? `nav-menu-visible` : ``
         }`}
       >
-        <div className="mb-6 md:mb-0 md:mr-6 cursor-pointer hover:text-red-700">
+        <div className="mb-6 md:mb-0 md:mr-6 cursor-pointer hover:text-white">
           <Link href="/">art</Link>
         </div>
-        <div className="cursor-pointer hover:text-red-700">
+        <div className="cursor-pointer hover:text-white">
           <Link href="/">about me</Link>
         </div>
       </div>

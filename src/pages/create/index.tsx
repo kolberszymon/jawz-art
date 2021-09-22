@@ -137,8 +137,6 @@ const Create: React.FC<CreateProps> = ({ provider, sdk, accounts }) => {
 
   return (
     <div className="h-screen w-full relative">
-      <Navbar />
-
       <main className="w-full h-full flex flex-col justify-center items-center px-2">
         <NFTDetailsForm sendData={lazyMint} />
         {statusMessage && (
