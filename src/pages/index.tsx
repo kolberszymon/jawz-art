@@ -58,14 +58,14 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
 
     let nftMetaArray: any[] = [];
     let nftPrices: any[] = [];
-    /* eslint-disable */
-    for (let id in data.items) {
+
+    Object.keys(data.items).forEach((id) => {
       nftMetaArray.push(getNftMetaById(data.items[id].id));
       nftPrices.push(
         getNftPriceById(data.items[id].contract, data.items[id].tokenId),
       );
-    }
-    /* eslint-enable */
+    });
+
     nftMetaArray = await Promise.all(nftMetaArray);
     nftPrices = await Promise.all(nftPrices);
     console.log(nftPrices);
