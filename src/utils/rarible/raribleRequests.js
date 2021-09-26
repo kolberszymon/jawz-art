@@ -11,7 +11,13 @@ export async function generateTokenId(contract, minter) {
   return tokenId;
 }
 
-async function createLazyMintForm(tokenId, contract, minter, ipfsHash) {
+async function createLazyMintForm(
+  tokenId,
+  contract,
+  minter,
+  ipfsHash,
+  royalties,
+) {
   // const tokenId = await generateTokenId(contract, minter)
   console.log('generated tokenId', tokenId);
   return {
@@ -20,7 +26,7 @@ async function createLazyMintForm(tokenId, contract, minter, ipfsHash) {
     tokenId,
     uri: `/ipfs/${ipfsHash}`,
     creators: [{ account: minter, value: '10000' }],
-    royalties: [],
+    royalties: [royalties],
   };
 }
 
@@ -30,8 +36,15 @@ export async function createLazyMint(
   contract,
   minter,
   ipfsHash,
+  royalties,
 ) {
-  const form = await createLazyMintForm(tokenId, contract, minter, ipfsHash);
+  const form = await createLazyMintForm(
+    tokenId,
+    contract,
+    minter,
+    ipfsHash,
+    royalties,
+  );
   const signature = await sign(provider, 3, contract, form, minter);
   return { ...form, signatures: [signature.result] };
 }

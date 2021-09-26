@@ -141,21 +141,43 @@ export const matchSellOrder = async (sellOrder, params) => {
 
 export async function prepareMatchingOrder(sellOrder, accountAddress) {
   const rariblePrepareTxUrl = `https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders/${sellOrder.hash}/prepareTx`;
-  const res = await fetch(rariblePrepareTxUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  const res = await axios.post(
+    rariblePrepareTxUrl,
+    JSON.stringify({
       maker: accountAddress,
       amount: 1,
       payouts: [],
       originFees: [],
     }),
-  });
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
   const resJson = await res.json();
   console.log({ resJson });
   return resJson;
 }
 
-// export const matchOrder = async (provider, order) => {};
+async function prepareTx(hash, maker, amount) {
+  const result = await axios.post(
+    `https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders/${hash}/prepareTx`,
+    { maker, amount, payouts: [], originFees: [] },
+  );
+  console.log(result);
+  return result.data;
+}
+
+export const matchOrder = async (hash, maker, amount, web3) => {
+  const preparedTx = await prepareTx(hash, maker, amount);
+  console.log(maker, preparedTx.transaction.to);
+  const tx = {
+    from: maker,
+    data: preparedTx.transaction.data,
+    to: preparedTx.transaction.to,
+    value: amount.toString(),
+  };
+  console.log('sending tx', tx);
+  return web3.eth.sendTransaction(tx);
+};

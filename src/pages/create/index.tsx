@@ -1,16 +1,10 @@
 import Navbar from '@/components/Navbar';
 import MetaMaskButton from '@/components/MetaMaskButton';
-import UploadFileInput from '@/components/UploadFileInput';
 import NFTDetailsForm from '@/components/NFTDetailsForm';
 import axios from 'axios';
 
-import {
-  isLazyErc721Collection,
-  RaribleSdk,
-} from '@rarible/protocol-ethereum-sdk';
-import { toAddress, toBigNumber } from '@rarible/types';
 import React, { useState } from 'react';
-import { NftCollection_Type, NftItem } from '@rarible/protocol-api-client';
+import { NftCollection_Type } from '@rarible/protocol-api-client';
 import { uploadToIPFS } from '@/utils/ipfs';
 import {
   generateTokenId,
@@ -18,15 +12,12 @@ import {
   putLazyMint,
 } from '@/utils/rarible/raribleRequests';
 import { readFileSync } from '@/utils/readFileSync';
-
 import { createSellOrder } from '@/utils/rarible/createOrder';
-import { contractAddresses } from '@/constants/addresses';
-import { sign } from '@/utils/rarible/lazyMint';
-import { retry } from '@/utils/retry';
+import { currentNetwork } from '@/config';
+import { assetAddresses } from '@/constants/addresses';
 
 type CreateProps = {
   provider: any;
-  sdk: RaribleSdk;
   accounts: string[];
 };
 
@@ -47,17 +38,15 @@ type FormValues = {
 };
 
 const mintFormInitial: MintForm = {
-  id: `0xB0EA149212Eb707a1E5FC1D2d3fD318a8d94cf05`, // default collection on "rinkeby" that supports lazy minting
+  id: assetAddresses[currentNetwork].address,
   type: `ERC721`,
   isLazy: true,
   isLazySupported: true,
   loading: false,
 };
 
-const NETWORK = `RINKEBY`;
-
-const Create: React.FC<CreateProps> = ({ provider, sdk, accounts }) => {
-  const [collection, setCollection] = useState<MintForm>(mintFormInitial);
+const Create: React.FC<CreateProps> = ({ provider, accounts }) => {
+  const [collection] = useState<MintForm>(mintFormInitial);
   const [statusMessage, setStatusMessage] = useState<string>(``);
   const [tokenId, setTokenId] = useState<string>(``);
 
@@ -110,6 +99,7 @@ const Create: React.FC<CreateProps> = ({ provider, sdk, accounts }) => {
       collection.id,
       accounts[0],
       fullObjectHash,
+      { account: accounts[0], value: data.royalties * 100 },
     );
 
     console.log(form);
@@ -137,6 +127,7 @@ const Create: React.FC<CreateProps> = ({ provider, sdk, accounts }) => {
 
   return (
     <div className="h-screen w-full relative">
+      <Navbar />
       <main className="w-full h-full flex flex-col justify-center items-center px-2">
         <NFTDetailsForm sendData={lazyMint} />
         {statusMessage && (

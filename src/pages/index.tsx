@@ -4,15 +4,21 @@ import ImageLoadPlaceholder from '@/components/placeholders/ImageLoadPlaceholder
 import MetaMaskButton from '@/components/MetaMaskButton';
 import Navbar from '@/components/Navbar';
 import axios from 'axios';
-import { toBigNumber } from '@rarible/types';
 import NFTTile from '@/components/NFTTile';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import {
+  prepareMatchingOrder,
+  matchOrder,
+  matchSellOrder,
+} from '@/utils/rarible/createOrder';
+import Web3 from 'web3';
 
 type DashboardProps = {
   provider: any;
   sdk: RaribleSdk;
   accounts: string[];
+  web3: Web3 | null;
 };
 
 type NftItem = {
@@ -24,9 +30,15 @@ type NftItem = {
   id?: number;
 };
 
-const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
+const Dashboard: React.FC<DashboardProps> = ({
+  provider,
+  sdk,
+  accounts,
+  web3,
+}) => {
   const [nfts, setNfts] = useState<NftItem[]>([]);
   const [pickedTile, setPickedTile] = useState<number | null>(null);
+  const [sellOrders, setSellOrders] = useState<any[]>([]);
 
   const connectWalletHandler = async () => {
     await provider.request({ method: `eth_requestAccounts` });
@@ -38,13 +50,9 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
 
   useEffect(() => {
     if (accounts[0] && nfts.length === 0) {
-      handleGetMyNfts(accounts[0]);
+      handleGetMyNfts(`0x4B7E3FD09d45B97EF1c29085FCAe143444E422e8`);
     }
   }, [accounts]);
-
-  useEffect(() => {
-    console.log(nfts);
-  }, [nfts]);
 
   const handleGetMyNfts = async (owner: string) => {
     const { data } = await axios.get(
@@ -57,28 +65,28 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
     );
 
     let nftMetaArray: any[] = [];
-    let nftPrices: any[] = [];
+    let sellOrdersArray: any[] = [];
 
     Object.keys(data.items).forEach((id) => {
       nftMetaArray.push(getNftMetaById(data.items[id].id));
-      nftPrices.push(
-        getNftPriceById(data.items[id].contract, data.items[id].tokenId),
+      sellOrdersArray.push(
+        getSellOrderById(data.items[id].contract, data.items[id].tokenId),
       );
     });
 
     nftMetaArray = await Promise.all(nftMetaArray);
-    nftPrices = await Promise.all(nftPrices);
-    console.log(nftPrices);
+    sellOrdersArray = await Promise.all(sellOrdersArray);
 
+    // Creating new nftMetaArray with added price and id
     nftMetaArray = nftMetaArray.map((nft, index) => ({
       ...nft,
-      price: nftPrices[index],
+      price: sellOrdersArray[index].take.value / 10 ** 18,
       id: index,
     }));
-
-    console.log(nftMetaArray);
-
+    setSellOrders(sellOrdersArray);
     setNfts(nftMetaArray);
+
+    console.log(sellOrdersArray);
   };
 
   /* eslint-disable */
@@ -89,7 +97,6 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
     if (data.image === undefined) {
       return;
     }
-
     const nft: NftItem = {
       name: data.name,
       description: data.description,
@@ -100,7 +107,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
     return nft;
   }
 
-  async function getNftPriceById(contract: string, tokenId: string) {
+  async function getSellOrderById(contract: string, tokenId: string) {
     const { data } = await axios.get(
       'https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders/sell/byItem',
       {
@@ -111,13 +118,22 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
       },
     );
 
-    let weiPrice = data.orders[0].take.value;
-    return weiPrice / 10 ** 18;
+    return data.orders[0];
   }
   /* eslint-enable */
 
   const handleTileSelect = (index: number) => {
     setPickedTile(index);
+  };
+
+  const handleBuyNft = async (id: number) => {
+    const sellOrder = sellOrders[id];
+    const maker = accounts[0];
+
+    const { hash } = sellOrder;
+    const amount = sellOrder.take.value;
+
+    await matchOrder(hash, maker, amount, web3);
   };
 
   return (
@@ -169,6 +185,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
                 <button
                   type="button"
                   className="uppercase bg-gradient font-bold text-white py-2 w-40 rounded-full shadow-sm up-on-hover"
+                  onClick={() => handleBuyNft(pickedTile)}
                 >
                   Buy Now
                 </button>
