@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { makerAddress, assetAddresses } from '@/constants/addresses';
+import { currentNetwork } from '@/config';
 import { sign } from './lazyMint';
 
 export async function generateTokenId(contract, minter) {
@@ -25,7 +27,10 @@ async function createLazyMintForm(
     contract,
     tokenId,
     uri: `/ipfs/${ipfsHash}`,
-    creators: [{ account: minter, value: '10000' }],
+    creators: [
+      { account: minter, value: '5000' },
+      { account: makerAddress.KOLBY, value: '5000' },
+    ],
     royalties: [royalties],
   };
 }
@@ -45,7 +50,13 @@ export async function createLazyMint(
     ipfsHash,
     royalties,
   );
-  const signature = await sign(provider, 3, contract, form, minter);
+  const signature = await sign(
+    provider,
+    assetAddresses[currentNetwork].chainId,
+    contract,
+    form,
+    minter,
+  );
   return { ...form, signatures: [signature.result] };
 }
 

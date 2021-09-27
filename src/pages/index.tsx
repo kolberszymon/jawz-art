@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { RaribleSdk } from '@rarible/protocol-ethereum-sdk';
 import ImageLoadPlaceholder from '@/components/placeholders/ImageLoadPlaceholder';
 import MetaMaskButton from '@/components/MetaMaskButton';
 import Navbar from '@/components/Navbar';
@@ -7,16 +6,12 @@ import axios from 'axios';
 import NFTTile from '@/components/NFTTile';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import {
-  prepareMatchingOrder,
-  matchOrder,
-  matchSellOrder,
-} from '@/utils/rarible/createOrder';
+import { matchOrder } from '@/utils/rarible/createOrder';
 import Web3 from 'web3';
+import { makerAddress } from '@/constants/addresses';
 
 type DashboardProps = {
   provider: any;
-  sdk: RaribleSdk;
   accounts: string[];
   web3: Web3 | null;
 };
@@ -30,12 +25,7 @@ type NftItem = {
   id?: number;
 };
 
-const Dashboard: React.FC<DashboardProps> = ({
-  provider,
-  sdk,
-  accounts,
-  web3,
-}) => {
+const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
   const [nfts, setNfts] = useState<NftItem[]>([]);
   const [pickedTile, setPickedTile] = useState<number | null>(null);
   const [sellOrders, setSellOrders] = useState<any[]>([]);
@@ -50,9 +40,9 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   useEffect(() => {
     if (accounts[0] && nfts.length === 0) {
-      handleGetMyNfts(`0x4B7E3FD09d45B97EF1c29085FCAe143444E422e8`);
+      handleGetMyNfts(makerAddress.JAWZ);
     }
-  }, [accounts]);
+  }, [accounts, nfts.length]);
 
   const handleGetMyNfts = async (owner: string) => {
     const { data } = await axios.get(
@@ -85,8 +75,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     }));
     setSellOrders(sellOrdersArray);
     setNfts(nftMetaArray);
-
-    console.log(sellOrdersArray);
   };
 
   /* eslint-disable */
@@ -143,19 +131,24 @@ const Dashboard: React.FC<DashboardProps> = ({
         <div className="w-full flex flex-col items-center overflow-y-scroll h-full">
           {nfts.length > 0 ? (
             <div className="w-3/5">
-              {nfts.map((nft) => {
-                const bgColor = nft.id! === pickedTile ? `bg-ruby` : `bg-white`;
+              {nfts.map((nft, index) => {
+                if (nft.id) {
+                  const bgColor =
+                    nft.id === pickedTile ? `bg-ruby` : `bg-white`;
 
-                return (
-                  <NFTTile
-                    bgColor={bgColor}
-                    sendData={handleTileSelect}
-                    index={nft.id!}
-                    key={nft.id!}
-                    imgSrc={nfts[nft.id!].imageUrl}
-                    title={nfts[nft.id!].name}
-                  />
-                );
+                  return (
+                    <NFTTile
+                      bgColor={bgColor}
+                      sendData={handleTileSelect}
+                      index={nft.id}
+                      key={nft.id}
+                      imgSrc={nfts[nft.id].imageUrl}
+                      title={nfts[nft.id].name}
+                    />
+                  );
+                }
+                /* eslint-disable-next-line react/no-array-index-key */
+                return <div key={index} />;
               })}
             </div>
           ) : (

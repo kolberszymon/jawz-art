@@ -2,14 +2,9 @@ import { AppProps } from 'next/app';
 import '../styles/global.css';
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import { createRaribleSdk, RaribleSdk } from '@rarible/protocol-ethereum-sdk';
-import { Web3Ethereum } from '@rarible/web3-ethereum';
-
-const NETWORK = `rinkeby`;
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [provider, setProvider] = useState<any>();
-  const [sdk, setSdk] = useState<RaribleSdk>();
   const [accounts, setAccounts] = useState<string[]>([]);
   const [web3, setWeb3] = useState<Web3 | null>();
 
@@ -28,9 +23,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (web3) {
-      console.log(`here`);
-      const raribleSdk = createRaribleSdk(new Web3Ethereum({ web3 }), NETWORK);
-      setSdk(raribleSdk);
       // set current account if already connected
       web3.eth.getAccounts().then((e) => {
         setAccounts(e);
@@ -54,7 +46,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
   }
 
-  const blockchainProps = { ...pageProps, provider, sdk, accounts, web3 };
+  const blockchainProps = { ...pageProps, provider, accounts, web3 };
 
   return <Component {...blockchainProps} />;
 }
