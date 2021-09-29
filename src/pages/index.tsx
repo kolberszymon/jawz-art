@@ -137,7 +137,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
   return (
     <div className="h-screen w-full">
       <Navbar />
-      <main className="w-full h-full flex-1 flex flex-row md:flex-row justify-around items-center px-2 pt-32 pb-24 mb-10">
+      <main className="w-full h-full flex-1 hidden md:flex justify-around items-center px-2 pt-32 pb-24 mb-10">
         <div className="w-full flex flex-col items-center overflow-y-scroll h-full">
           {nfts.length > 0 ? (
             <div className="w-3/5">
@@ -244,6 +244,27 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
             <p className="text-2xl font-bold">Select nft to see details.</p>
           </div>
         )}
+      </main>
+      <main className="w-full h-full flex-1 flex md:hidden justify-center items-center px-2 pt-32 pb-24 mb-10">
+        <p className="text-center font-bold">
+          Don&apos;t worry! <br />
+          <br />
+          We did not forget about mobile users
+          <br />
+          <br />
+          💛💛💛
+          <br />
+          <br />
+          But right now we&apos;re more into bigger displays.
+          <br />
+          <br />
+          If you want to see or buy some amazing art please do launch us on
+          anything wider than phone
+          <br />
+          <br />
+          <br />
+          🍒 Cheers! 🍒
+        </p>
       </main>
 
       <MetaMaskButton onClick={handleButtonClick} accounts={accounts} />

@@ -26,7 +26,7 @@ const AboutMe: React.FC<CreateProps> = ({ provider, accounts }) => {
   return (
     <div className="h-screen w-full relative">
       <Navbar />
-      <main className="w-full h-full flex flex-col justify-center items-center px-2 py-14">
+      <main className="w-full h-full hidden md:flex flex-col justify-center items-center px-2 py-14">
         <h1 className="text-8xl mt-10">
           About <span className="text-white">me</span>_
         </h1>
@@ -77,6 +77,27 @@ const AboutMe: React.FC<CreateProps> = ({ provider, accounts }) => {
             </ul>
           )}
         </div>
+      </main>
+      <main className="w-full h-full flex-1 flex md:hidden justify-center items-center px-2 pt-32 pb-24 mb-10">
+        <p className="text-center font-bold">
+          Don&apos;t worry! <br />
+          <br />
+          We did not forget about mobile users
+          <br />
+          <br />
+          💛💛💛
+          <br />
+          <br />
+          But right now we&apos;re more into bigger displays.
+          <br />
+          <br />
+          If you want to see or buy some amazing art please do launch us on
+          anything wider than phone
+          <br />
+          <br />
+          <br />
+          🍒 Cheers! 🍒
+        </p>
       </main>
       <div className="absolute bottom-5 left-20 flex">
         <button
