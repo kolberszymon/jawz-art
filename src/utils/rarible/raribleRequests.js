@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { makerAddress, assetAddresses } from '@/constants/addresses';
-import { currentNetwork } from '@/config';
+import { currentNetwork, creatorSplitJawz, creatorSplitKolby } from '@/config';
 import { sign } from './lazyMint';
 
 export async function generateTokenId(contract, minter) {
@@ -28,8 +28,8 @@ async function createLazyMintForm(
     tokenId,
     uri: `/ipfs/${ipfsHash}`,
     creators: [
-      { account: minter, value: '5000' },
-      { account: makerAddress.KOLBY, value: '5000' },
+      { account: minter, value: creatorSplitJawz },
+      { account: makerAddress.KOLBY, value: creatorSplitKolby },
     ],
     royalties: [royalties],
   };

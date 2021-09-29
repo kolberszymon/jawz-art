@@ -30,6 +30,8 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
   const [nfts, setNfts] = useState<NftItem[]>([]);
   const [pickedTile, setPickedTile] = useState<number | null>(null);
   const [sellOrders, setSellOrders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [secsForLoading] = useState<number>(4.5);
 
   const connectWalletHandler = async () => {
     await provider.request({ method: `eth_requestAccounts` });
@@ -38,6 +40,12 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
   const handleButtonClick = (): void => {
     connectWalletHandler();
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, secsForLoading * 1000);
+  }, [secsForLoading]);
 
   useEffect(() => {
     if (accounts[0] && nfts.length === 0) {
@@ -154,8 +162,36 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
               })}
             </div>
           ) : (
-            <div className="flex w-full h-full items-center justify-center">
-              <Loader type="TailSpin" color="#000" height={60} width={60} />
+            <div className="flex flex-col w-full h-full items-center justify-around">
+              {isLoading ? (
+                <Loader type="TailSpin" color="#000" height={60} width={60} />
+              ) : (
+                <>
+                  <Loader type="TailSpin" color="#000" height={60} width={60} />
+                  <div className="flex flex-col w-full items-center">
+                    <p className="font-bold text-xl text-center">
+                      Hmmm 🤔 <br />
+                      <br /> {secsForLoading} seconds passed <br /> and it still
+                      didn&apos;t load?
+                    </p>
+                    <br />
+                    <p className="font-bold">Here are some possibilities:</p>
+                    <br />
+                    <br />
+                    <div className="w-3/5 flex flex-col items-start">
+                      <p className="font-bold mb-4">
+                        ⏱️ Some NFTs can be large, give it some more time
+                      </p>
+                      <p className="font-bold mb-4">
+                        🗑️ Currently Jawz may not have any of them for sell
+                      </p>
+                      <p className="font-bold">
+                        ❌ You choose wrong ethereum network
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
