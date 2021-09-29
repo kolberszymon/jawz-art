@@ -16,8 +16,8 @@ const MetaMaskButton: React.FC<MetaMaskButtonProps> = ({
   return (
     <button
       className="w-48 h-14 bg-white shadow-circle items-center rounded-full fixed bottom-4 justify-around right-8  px-4 hidden md:flex"
-      onClick={() => handleClick}
-      onKeyDown={() => handleClick}
+      onClick={() => handleClick()}
+      onKeyDown={() => handleClick()}
       tabIndex={0}
       type="button"
       disabled={!!accounts.length}
