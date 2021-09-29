@@ -14,7 +14,6 @@ const assetAddresses = {
 };
 
 const makerAddress = {
-  // JAWZ: '0x4B7E3FD09d45B97EF1c29085FCAe143444E422e8',
   JAWZ: '0xc5b8d196970f9506A1E6151d8E3cc284dE4F1d86',
   KOLBY: '0x79Ea2d536b5b7144A3EabdC6A7E43130199291c0',
 };

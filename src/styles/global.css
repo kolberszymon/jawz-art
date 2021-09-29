@@ -66,17 +66,22 @@
     top: 3.5rem;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 77, 128, 1) 0%,
-      rgba(224, 93, 54, 1) 100%
-    );
     align-items: center;
     justify-content: center;
     width: 100%;
     text-align: center;
     transition: 0.3s;
     bottom: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    .nav-menu-bg {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 77, 128, 1) 0%,
+        rgba(224, 93, 54, 1) 100%
+      );
+    }
   }
 
   .nav-menu-visible {

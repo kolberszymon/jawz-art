@@ -1,6 +1,6 @@
 export type NETWORKS = 'MAINNET' | 'ROPSTEN' | 'RINKEBY';
 
-export const currentNetwork: NETWORKS = `ROPSTEN`;
+export const currentNetwork: NETWORKS = `MAINNET`;
 const creatorSplitKolbyPercentage = 50;
 
 export const creatorSplitKolby = `${creatorSplitKolbyPercentage * 100}`;

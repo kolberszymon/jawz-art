@@ -19,7 +19,7 @@ const Navbar = () => {
         </h6>
       </Link>
       <div
-        className={`text-xl uppercase nav-menu ${
+        className={`text-xl uppercase nav-menu nav-menu-bg ${
           isNavVisible ? `nav-menu-visible` : ``
         }`}
       >
