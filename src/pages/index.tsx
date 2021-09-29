@@ -55,7 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
 
   const handleGetMyNfts = async (owner: string) => {
     const { data } = await axios.get(
-      `https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner`,
+      `https://api-staging.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner`,
       {
         params: {
           owner,
@@ -90,7 +90,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
   /* eslint-disable */
   async function getNftMetaById(id: string) {
     const { data } = await axios.get(
-      `https://api-dev.rarible.com/protocol/v0.1/ethereum/nft/items/${id}/meta`,
+      `https://api-staging.rarible.com/protocol/v0.1/ethereum/nft/items/${id}/meta`,
     );
     if (data.image === undefined) {
       return;
@@ -107,7 +107,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
 
   async function getSellOrderById(contract: string, tokenId: string) {
     const { data } = await axios.get(
-      'https://api-dev.rarible.com/protocol/v0.1/ethereum/order/orders/sell/byItem',
+      'https://api-staging.rarible.com/protocol/v0.1/ethereum/order/orders/sell/byItem',
       {
         params: {
           contract: contract,
