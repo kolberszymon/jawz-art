@@ -8,7 +8,8 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { matchOrder } from '@/utils/rarible/createOrder';
 import Web3 from 'web3';
-import { makerAddress } from '@/constants/addresses';
+import { makerAddress, getRaribleUrl } from '@/constants/addresses';
+import { currentNetwork } from '@/config';
 
 type DashboardProps = {
   provider: any;
@@ -75,6 +76,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
     }));
     setSellOrders(sellOrdersArray);
     setNfts(nftMetaArray);
+    console.log(sellOrdersArray);
   };
 
   /* eslint-disable */
@@ -182,12 +184,22 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
                 >
                   Buy Now
                 </button>
-                <button
-                  type="button"
-                  className="uppercase bg-white font-bold py-2 w-40 rounded-full text-gradient shadow-sm up-on-hover border-vibyred border-2 border-solid"
+                <a
+                  href={getRaribleUrl(
+                    currentNetwork,
+                    sellOrders[pickedTile].make.assetType.contract,
+                    sellOrders[pickedTile].make.assetType.tokenId,
+                  )}
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  See on Rarible
-                </button>
+                  <button
+                    type="button"
+                    className="uppercase bg-white font-bold py-2 w-40 rounded-full text-gradient shadow-sm up-on-hover border-vibyred border-2 border-solid"
+                  >
+                    See on Rarible
+                  </button>
+                </a>
               </div>
             </div>
           </div>

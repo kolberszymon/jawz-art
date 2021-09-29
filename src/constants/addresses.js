@@ -18,4 +18,24 @@ const makerAddress = {
   KOLBY: '0x79Ea2d536b5b7144A3EabdC6A7E43130199291c0',
 };
 
-module.exports = { assetAddresses, makerAddress };
+const getRaribleUrl = (network, contractId, tokenId) => {
+  let raribleUrl = '';
+
+  switch (network) {
+    case 'RINKEBY':
+      raribleUrl = `https://rinkey.rarible.com/token/${contractId}:${tokenId}?tab=details`;
+      break;
+    case 'ROPSTEN':
+      raribleUrl = `https://ropsten.rarible.com/token/${contractId}:${tokenId}?tab=details`;
+      break;
+    case 'MAINNET':
+      raribleUrl = `https://rarible.com/token/${contractId}:${tokenId}?tab=details`;
+      break;
+    default:
+      break;
+  }
+
+  return raribleUrl;
+};
+
+module.exports = { assetAddresses, makerAddress, getRaribleUrl };
