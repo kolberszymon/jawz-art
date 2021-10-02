@@ -1,11 +1,16 @@
 import axios from 'axios';
 import { makerAddress, assetAddresses } from '@/constants/addresses';
-import { currentNetwork, creatorSplitJawz, creatorSplitKolby } from '@/config';
+import {
+  currentNetwork,
+  creatorSplitJawz,
+  creatorSplitKolby,
+  apiDomain,
+} from '@/config';
 import { sign } from './lazyMint';
 
 export async function generateTokenId(contract, minter) {
   console.log('generating tokenId for', contract, minter);
-  const raribleTokenIdUrl = `https://api-staging.rarible.com/protocol/v0.1/ethereum/nft/collections/${contract}/generate_token_id?minter=${minter}`;
+  const raribleTokenIdUrl = `${apiDomain}/protocol/v0.1/ethereum/nft/collections/${contract}/generate_token_id?minter=${minter}`;
   const { data } = await axios.get(raribleTokenIdUrl);
 
   const { tokenId } = data;
@@ -28,8 +33,8 @@ async function createLazyMintForm(
     tokenId,
     uri: `/ipfs/${ipfsHash}`,
     creators: [
-      { account: minter, value: creatorSplitJawz },
-      { account: makerAddress.KOLBY, value: creatorSplitKolby },
+      { account: minter, value: 10000 },
+      // { account: makerAddress.KOLBY, value: creatorSplitKolby },
     ],
     royalties: [royalties],
   };
@@ -61,8 +66,8 @@ export async function createLazyMint(
 }
 
 export async function putLazyMint(form) {
-  const raribleMintUrl =
-    'https://api-staging.rarible.com/protocol/v0.1/ethereum/nft/mints';
+  const raribleMintUrl = `${apiDomain}/protocol/v0.1/ethereum/nft/mints`;
+  console.log(form);
   const raribleMintResult = await axios.post(
     raribleMintUrl,
     JSON.stringify(form),

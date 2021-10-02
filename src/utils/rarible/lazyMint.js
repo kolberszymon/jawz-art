@@ -25,5 +25,6 @@ export async function sign(provider, chainId, contractAddress, form, account) {
     { ...form, tokenURI: form.uri },
     ERC721Types,
   );
+
   return (await EIP712.signTypedData(provider, account, data)).sig;
 }

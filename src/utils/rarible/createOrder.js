@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { sign } from './orders';
+import { apiDomain } from '@/config';
 
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
 async function prepareOrderMessage(form) {
-  const raribleEncodeOrderUrl =
-    'https://api-staging.rarible.com/protocol/v0.1/ethereum/order/encoder/order';
+  const raribleEncodeOrderUrl = `${apiDomain}/protocol/v0.1/ethereum/order/encoder/order`;
   const res = await axios.post(raribleEncodeOrderUrl, JSON.stringify(form), {
     headers: { 'Content-Type': 'application/json' },
   });
@@ -82,6 +82,7 @@ export const createSellOrder = async (type, provider, params) => {
         params.ethAmt,
         salt,
       );
+      console.log('SELL ORDER');
       console.log({ order });
       /* eslint-disable */
       const preparedOrder = await prepareOrderMessage(order);
@@ -95,8 +96,7 @@ export const createSellOrder = async (type, provider, params) => {
       break;
   }
 
-  const raribleOrderUrl =
-    'https://api-staging.rarible.com/protocol/v0.1/ethereum/order/orders';
+  const raribleOrderUrl = `${apiDomain}/protocol/v0.1/ethereum/order/orders`;
 
   const raribleJson = { ...order, signature: signature.result };
   console.log(raribleJson);
@@ -140,7 +140,7 @@ export const matchSellOrder = async (sellOrder, params) => {
 };
 
 export async function prepareMatchingOrder(sellOrder, accountAddress) {
-  const rariblePrepareTxUrl = `https://api-staging.rarible.com/protocol/v0.1/ethereum/order/orders/${sellOrder.hash}/prepareTx`;
+  const rariblePrepareTxUrl = `${apiDomain}/protocol/v0.1/ethereum/order/orders/${sellOrder.hash}/prepareTx`;
   const res = await axios.post(
     rariblePrepareTxUrl,
     JSON.stringify({
@@ -162,7 +162,7 @@ export async function prepareMatchingOrder(sellOrder, accountAddress) {
 
 async function prepareTx(hash, maker, amount) {
   const result = await axios.post(
-    `https://api-staging.rarible.com/protocol/v0.1/ethereum/order/orders/${hash}/prepareTx`,
+    `${apiDomain}/protocol/v0.1/ethereum/order/orders/${hash}/prepareTx`,
     { maker, amount, payouts: [], originFees: [] },
   );
   console.log(result);

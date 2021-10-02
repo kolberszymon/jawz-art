@@ -9,7 +9,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { matchOrder } from '@/utils/rarible/createOrder';
 import Web3 from 'web3';
 import { makerAddress, getRaribleUrl } from '@/constants/addresses';
-import { currentNetwork } from '@/config';
+import { currentNetwork, apiDomain } from '@/config';
 
 type DashboardProps = {
   provider: any;
@@ -55,7 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
 
   const handleGetMyNfts = async (owner: string) => {
     const { data } = await axios.get(
-      `https://api-staging.rarible.com/protocol/v0.1/ethereum/nft/items/byOwner`,
+      `${apiDomain}/protocol/v0.1/ethereum/nft/items/byOwner`,
       {
         params: {
           owner,
@@ -90,7 +90,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
   /* eslint-disable */
   async function getNftMetaById(id: string) {
     const { data } = await axios.get(
-      `https://api-staging.rarible.com/protocol/v0.1/ethereum/nft/items/${id}/meta`,
+      `${apiDomain}/protocol/v0.1/ethereum/nft/items/${id}/meta`,
     );
     if (data.image === undefined) {
       return;
@@ -107,7 +107,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
 
   async function getSellOrderById(contract: string, tokenId: string) {
     const { data } = await axios.get(
-      'https://api-staging.rarible.com/protocol/v0.1/ethereum/order/orders/sell/byItem',
+      `${apiDomain}/protocol/v0.1/ethereum/order/orders/sell/byItem`,
       {
         params: {
           contract: contract,
