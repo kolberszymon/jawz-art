@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useState, useEffect } from 'react';
 import ImageLoadPlaceholder from '@/components/placeholders/ImageLoadPlaceholder';
 import MetaMaskButton from '@/components/MetaMaskButton';
@@ -149,6 +150,9 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
 
   return (
     <div className="h-screen w-full">
+      <Head>
+        <title>Jawzart</title>
+      </Head>
       <Navbar />
       <main className="w-full h-full flex-1 hidden md:flex justify-around items-center px-2 pt-32 pb-24 mb-10">
         <div className="w-full flex flex-col items-center overflow-y-scroll h-full">
