@@ -171,12 +171,19 @@ async function prepareTx(hash, maker, amount) {
 
 export const matchOrder = async (hash, maker, amount, web3) => {
   const preparedTx = await prepareTx(hash, maker, amount);
+  const gasPrice = await web3.eth.getGasPrice();
+  const gasEstimated = await web3.eth.estimateGas({
+    to: maker,
+    data: preparedTx.transaction.data,
+  });
   console.log(maker, preparedTx.transaction.to);
   const tx = {
     from: maker,
     data: preparedTx.transaction.data,
     to: preparedTx.transaction.to,
     value: amount.toString(),
+    gas: gasEstimated,
+    gasPrice: gasPrice,
   };
   console.log('sending tx', tx);
   return web3.eth.sendTransaction(tx);
