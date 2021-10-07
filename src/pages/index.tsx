@@ -183,7 +183,13 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
                       didn&apos;t load?
                     </p>
                     <br />
-                    <p className="font-bold">Here are some possibilities:</p>
+                    <p className="font-bold text-3xl text-center mb-4">
+                      REMEBER TO CONNECT WITH METAMASK IN ORDER TO SEE NFTS!
+                    </p>
+                    <br />
+                    <p className="font-bold">
+                      Here are some other possibilities:
+                    </p>
                     <br />
                     <br />
                     <div className="w-3/5 flex flex-col items-start">
