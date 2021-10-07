@@ -63,6 +63,8 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
       },
     );
 
+    console.log(data.items);
+
     let nftMetaArray: any[] = [];
     let sellOrdersArray: any[] = [];
 
@@ -76,15 +78,26 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
     nftMetaArray = await Promise.all(nftMetaArray);
     sellOrdersArray = await Promise.all(sellOrdersArray);
 
-    // Creating new nftMetaArray with added price and id
-    nftMetaArray = nftMetaArray.map((nft, index) => ({
-      ...nft,
-      price: sellOrdersArray[index].take.value / 10 ** 18,
+    nftMetaArray = nftMetaArray.map((item, index) => ({ ...item, id: index }));
+    sellOrdersArray = sellOrdersArray.map((item, index) => ({
+      ...item,
       id: index,
     }));
+
+    nftMetaArray = nftMetaArray
+      .filter((item) => sellOrdersArray[item.id].take !== undefined)
+      .map((nft) => ({
+        ...nft,
+        price: sellOrdersArray[nft.id].take.value / 10 ** 18,
+      }));
+
+    sellOrdersArray = sellOrdersArray.filter(
+      (item) => sellOrdersArray[item.id].take !== undefined,
+    );
+    console.log(nftMetaArray);
+    console.log(sellOrdersArray);
     setSellOrders(sellOrdersArray);
     setNfts(nftMetaArray);
-    console.log(sellOrdersArray);
   };
 
   /* eslint-disable */
@@ -142,23 +155,18 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, accounts, web3 }) => {
           {nfts.length > 0 ? (
             <div className="w-3/5">
               {nfts.map((nft, index) => {
-                if (nft.id) {
-                  const bgColor =
-                    nft.id === pickedTile ? `bg-ruby` : `bg-white`;
+                const bgColor = index === pickedTile ? `bg-ruby` : `bg-white`;
 
-                  return (
-                    <NFTTile
-                      bgColor={bgColor}
-                      sendData={handleTileSelect}
-                      index={nft.id}
-                      key={nft.id}
-                      imgSrc={nfts[nft.id].imageUrl}
-                      title={nfts[nft.id].name}
-                    />
-                  );
-                }
-                /* eslint-disable-next-line react/no-array-index-key */
-                return <div key={index} />;
+                return (
+                  <NFTTile
+                    bgColor={bgColor}
+                    sendData={handleTileSelect}
+                    index={index}
+                    key={nft.id}
+                    imgSrc={nft.imageUrl}
+                    title={nft.name}
+                  />
+                );
               })}
             </div>
           ) : (

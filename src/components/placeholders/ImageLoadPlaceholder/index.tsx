@@ -24,6 +24,7 @@ const ImageLoadPlaceholder: React.FC<ImageLoadPlaceholderProps> = ({
 
   useEffect(() => {
     console.log(isImageLoaded);
+    console.log(imgUrl);
   }, [isImageLoaded]);
 
   return (
