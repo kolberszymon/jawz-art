@@ -63,7 +63,6 @@ const Create: React.FC<CreateProps> = ({ provider, accounts }) => {
     // Reading file as array buffer
     // In order to  upload it
 
-
     // UPLOAD TO IPFS PROPER WAY
 
     const fullObjectHash = uploadToIpfsHelper(data);
@@ -91,12 +90,12 @@ const Create: React.FC<CreateProps> = ({ provider, accounts }) => {
 
   // HELPER FUNCTIONS
 
-  const uploadToIpfsHelper = async (data:FormValues) => {
+  const uploadToIpfsHelper = async (data:FormValues): Promise<string> => {
     const fileToUpload = data.inputFile[0];
     const fileAsArrayBuffer = await readFileSync(fileToUpload);
 
     if (!fileAsArrayBuffer || !accounts[0]) {
-      return;
+      return ``;
     }
 
     const ipfsImagePath: string = await uploadToIPFS(fileAsArrayBuffer);
