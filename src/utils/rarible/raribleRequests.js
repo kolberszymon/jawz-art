@@ -25,7 +25,6 @@ async function createLazyMintForm(
   ipfsHash,
   royalties,
 ) {
-  // const tokenId = await generateTokenId(contract, minter)
   console.log('generated tokenId', tokenId);
   return {
     '@type': 'ERC721',
@@ -34,7 +33,6 @@ async function createLazyMintForm(
     uri: `/ipfs/${ipfsHash}`,
     creators: [
       { account: minter, value: 10000 },
-      // { account: makerAddress.KOLBY, value: creatorSplitKolby },
     ],
     royalties: [royalties],
   };
@@ -68,6 +66,7 @@ export async function createLazyMint(
 export async function putLazyMint(form) {
   const raribleMintUrl = `${apiDomain}/protocol/v0.1/ethereum/nft/mints`;
   console.log(form);
+
   const raribleMintResult = await axios.post(
     raribleMintUrl,
     JSON.stringify(form),
@@ -75,5 +74,6 @@ export async function putLazyMint(form) {
       headers: { 'Content-Type': 'application/json' },
     },
   );
-  console.log(raribleMintResult);
+  
+  return raribleMintResult
 }

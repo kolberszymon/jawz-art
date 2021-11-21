@@ -12,7 +12,6 @@ import {
   putLazyMint,
 } from '@/utils/rarible/raribleRequests';
 import { readFileSync } from '@/utils/readFileSync';
-import { createSellOrder } from '@/utils/rarible/createOrder';
 import { currentNetwork } from '@/config';
 import { assetAddresses } from '@/constants/addresses';
 
@@ -63,30 +62,11 @@ const Create: React.FC<CreateProps> = ({ provider, accounts }) => {
   const lazyMint = async (data: FormValues) => {
     // Reading file as array buffer
     // In order to  upload it
-    const fileToUpload = data.inputFile[0];
-    const fileAsArrayBuffer = await readFileSync(fileToUpload);
 
-    if (!fileAsArrayBuffer || !accounts[0]) {
-      return;
-    }
 
     // UPLOAD TO IPFS PROPER WAY
 
-    const ipfsImagePath: string = await uploadToIPFS(fileAsArrayBuffer);
-    const res = await axios.get(`https://ipfs.infura.io/ipfs/${ipfsImagePath}`);
-    const correctImageUrl = res.request?.responseURL;
-
-    const json = {
-      description: data.description || ``,
-      name: data.title,
-      image: correctImageUrl,
-      attributes: [],
-      external_url: ``,
-    };
-
-    const fullObjectHash: string = await uploadToIPFS(JSON.stringify(json));
-
-    console.log(`hash:`, fullObjectHash);
+    const fullObjectHash = uploadToIpfsHelper(data);
 
     // LAZY MINT
 
@@ -103,37 +83,46 @@ const Create: React.FC<CreateProps> = ({ provider, accounts }) => {
     );
 
     console.log(form);
-    await putLazyMint(form);
+    const raribleMintResult = await putLazyMint(form);
 
-    // CREATE SELL ORDER
+    setStatusMessage(`Successfully minted token with id: ${raribleMintResult.data.id}`)
 
-    const sellOrderRes = await createSellOrder(
-      `MAKE_ERC721_TAKE_ETH`,
-      provider,
-      {
-        accountAddress: accounts[0],
-        makeERC721Address: collection.id,
-        makeERC721TokenId: newTokenId,
-        ethAmt: (data.price * 10 ** 18).toString(),
-      },
-    );
-
-    if (sellOrderRes) {
-      setStatusMessage(`Successfully minted and created sell order`);
-    }
   };
 
   // HELPER FUNCTIONS
 
+  const uploadToIpfsHelper = async (data:FormValues) => {
+    const fileToUpload = data.inputFile[0];
+    const fileAsArrayBuffer = await readFileSync(fileToUpload);
+
+    if (!fileAsArrayBuffer || !accounts[0]) {
+      return;
+    }
+
+    const ipfsImagePath: string = await uploadToIPFS(fileAsArrayBuffer);
+    const res = await axios.get(`https://ipfs.infura.io/ipfs/${ipfsImagePath}`);
+    const correctImageUrl = res.request?.responseURL;
+
+    const json = {
+      description: data.description || ``,
+      name: data.title,
+      image: correctImageUrl,
+      attributes: [],
+      external_url: ``,
+    };
+
+    const fullObjectHash: string = await uploadToIPFS(JSON.stringify(json));
+
+    return fullObjectHash
+  }
+
   return (
     <div className="h-screen w-full relative">
-      <Navbar />
       <main className="w-full h-full flex flex-col justify-center items-center px-2">
         <NFTDetailsForm sendData={lazyMint} />
         {statusMessage && (
           <div>
             <p>{statusMessage}</p> <br />
-            <p>TokenId: {tokenId}</p>
           </div>
         )}
       </main>

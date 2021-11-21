@@ -38,6 +38,7 @@ function createERC721ForEthOrder(maker, contract, tokenId, price, salt) {
       originFees: [],
     },
     salt,
+    signature: '0',
   };
 }
 
